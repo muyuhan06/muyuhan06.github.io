@@ -34,7 +34,7 @@ timezone: Asia/Chongqin # see https://en.wikipedia.org/wiki/List_of_tz_database_
 ## => Author and Social
 ##############################
 author: 穆宇涵
-  type      : person # "person" (default), "organization"
+  type      : # "person" (default), "organization"
   name      : 穆宇涵
   url       :
   avatar    : # path or url of avatar image (square)

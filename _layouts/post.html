@@ -1,80 +1,149 @@
----
-layout: blog
----
-<article class="unit-article layout-post">
-    <div class="unit-inner unit-article-inner">
-        <div itemscope itemtype="http://schema.org/Article" class="content">
-            <header>
-                <div class="unit-head">
-                    <div class="unit-inner unit-head-inner">
-                        <h1 class="entry-title" itemprop="name">{{ page.title }}</h1>
-                    </div>
-                </div>
-            </header>
-            <div class="bd article-content">
-                <div class="entry-content">
-                    <div class="meta">
-                        <p class="date-publish">
-                            {{ site.data.i18n[site.lang].published }}:
-                            <time itemprop="datePublished" class="date-pub {% if page.last_updated == null %}updated{% endif %}"
-                                title="{{ page.date | date_to_xmlschema }}" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B' }} {{ page.date | date: '%d' }}, {{ page.date | date: '%Y' }} </time>
-                            by
-                            <a class="author" href="/" rel="author" title="{{ site.data.i18n[site.lang].show_author }}">
-                                <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-                                    <span itemprop="name">{% if page.author == null %}{{ site.author.name }}{% else %}{{ page.author }}{% endif %}</span>
-                                </span>
-                            </a>
-                            {% if site.blog.cc_license and site.blog.cc_license_image %}
-                                <a class="license-icon" rel="license" href="{{ site.blog.cc_license }}" target="_blank" title="{{ site.data.i18n[site.lang].show_license }}">
-                                    <img alt="Creative Commons Licence" style="border-width:0" src="{{ site.blog.cc_license_image | relative_url }}"  height="16" width="80"/>
-                                </a>
-                            {% endif %}
-                            {% if page.last_updated %}
-                                ({{ site.data.i18n[site.lang].last_updated}}:
-                                <time class="date-updated updated" title="{{ page.last_updated | date_to_xmlschema }}" datetime="{{ page.last_updated | date_to_xmlschema }}">{{ page.last_updated }}</time>)
-                            {% endif %}
-                        </p>
-                        <ul class="list-category list-linear">
-                            <li class="list-head">{{ site.data.i18n[site.lang].categories }}: </li>
-                            {% assign categories_list = page.categories | sort %} {% include helpers/categories_list %}
-                        </ul>
-                        <ul class="list-tag list-linear">
-                            <li class="list-head">{{ site.data.i18n[site.lang].tags }}: </li>
-                            {% assign tags_list = page.tags | sort %} {% include helpers/tags_list %}
-                        </ul>
-                    </div>
-                    <div itemprop="articleBody">
-                        {{ content }}
-                    </div>
-                </div>
-            </div>
-            <footer class="unit-foot">
-                <div class="unit-inner unit-foot-inner">
-                    <div class="post-buttons">
-                        <a class="internal gotop" href="#page" title="{{ site.data.i18n[site.lang].back_to_top }}">{{ site.data.i18n[site.lang].back_to_top }}</a>
-                        {% if site.addthis_public_id %}
-                            {% include common/addthis.html %}
-                        {% endif %}
-                    </div>
-                    <nav class="pagination">
-                        {% if page.previous %}
-                            <a class="internal" rel="prev" href="{{ page.previous.url | relative_url }}" title="{{ site.data.i18n[site.lang].previous_post }} '{{ page.previous.title }}'"> ← {{ page.previous.title }}</a>
-                        {% endif %}
-                        {% if page.next %}
-                            <a class="internal" rel="next" href="{{ page.next.url | relative_url }}" title="{{ site.data.i18n[site.lang].next_post }} '{{ page.next.title }}'">{{ page.next.title }} → </a>
-                        {% endif %}
-                    </nav>
-                </div>
-            </footer>
-            <div class="misc-content">
-                {% if site.disqus.shortname and page.comments != false %}
-                    {% include common/disqus.html %}
-                    <div class="comments">
-                        <button class="center-block show-hidden" title="{{ site.data.i18n[site.lang].show_comments }}" data-disqus-url="{{ page.url | absolute_url }}">{{ site.data.i18n[site.lang].show_comments }}</button>
-                        <div id="disqus_thread"></div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
+<!DOCTYPE html>
+<html>
+{% include post-head.html %}
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="{{ site.nightMode }}"> {% include header.html %}
+
+  <header
+    class="g-banner post-header {{ site.postPatterns | prepend: 'post-pattern-' }} {{ site.theme-color | prepend: 'bgcolor-' }} {% unless page.cover %}post-no-cover{% endunless %}"
+    data-theme="{{ site.theme-color }}"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        {% if page.tags.size > 0 %}
+          {% for tag in page.tags  %}
+            <a href="{{ "/tags.html#" | append: tag | relative_url }}" class="post-tag">{{ tag }}</a>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <h1>{{ page.title }}</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</span>
+        <time class="post-meta-item" datetime="{{ page.date | date:"%y-%m-%d" }}"><i class="iconfont icon-date"></i>{{ page.date | date_to_string }}</time>
+      </div>
     </div>
-</article>
+    {% if page.cover %}
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('{{ page.cover | relative_url }}') center no-repeat; background-size: cover;"></div>
+    {% endif %}
+  </header>
+
+  <div class="post-content visible">
+    {% if page.subtitle %}
+    <h2 class="post-subtitle">{{ page.subtitle }}</h2>
+    {% endif %}
+
+    <article class="markdown-body">
+      {{ page.content }}
+    </article>
+
+    {% if site.social-share %}
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    {% endif %}
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="{{ site.avatar | relative_url }}" alt="">
+      </div>
+      <div class="author-name" rel="author">{{ site.author }}</div>
+      <div class="bio">
+        <p>{{ site.bio }}</p>
+      </div>
+      {% if site.sns.size > 0 %}
+      <ul class="sns-links">
+        {% for s in site.sns %}
+        <li>
+          <a href="{{ s[1] }}" target="_blank">
+                    <i class="iconfont icon-{{ s[0] }}"></i>
+                </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+    <section class="post-footer-item read-next">
+      {% if page.next.url %}
+      <div class="read-next-item">
+        <a href="{{ page.next.url | relative_url }}" class="read-next-link"></a>
+        <section>
+          <span>{{ page.next.title }}</span>
+          <p>{{ page.next.excerpt | strip_html | strip_newlines | truncate: 60}}</p>
+        </section>
+        {% if page.next.cover %}
+        <div class="filter"></div>
+        <img src="{{ page.next.cover | relative_url }}" alt="">
+        {% endif %}
+     </div>
+      {% endif %}
+
+      {% if page.previous.url %}
+      <div class="read-next-item">
+        <a href="{{ page.previous.url | relative_url }}" class="read-next-link"></a>
+          <section>
+            <span>{{ page.previous.title }}</span>
+            <p>{{ page.previous.excerpt | strip_html | strip_newlines | truncate: 60}}</p>
+          </section>
+          {% if page.previous.cover %}
+          <div class="filter"></div>
+          <img src="{{ page.previous.cover | relative_url }}" alt="">
+          {% endif %}
+      </div>
+      {% endif %}
+    </section>
+    {% if site.comments.disqus %}
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    {% endif %}
+  </section>
+
+  {% include footer.html %}
+
+  <script src="{{ "/assets/js/social-share.min.js" | relative_url }}"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        {% for i in site.social-share-items %}
+          '{{ i }}'
+          {% if forloop.last == false %},
+          {% endif %}
+        {% endfor %}
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  {% if site.comments.disqus %}
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = '{{ site.comments.disqus_url }}';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  {% endif %}
+
+  <script src="{{ "/assets/js/prism.js" | relative_url }}"></script>
+  <script src="{{ "/assets/js/index.min.js" | relative_url }}"></script>
+</body>
+
+</html>

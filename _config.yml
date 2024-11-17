@@ -28,17 +28,17 @@ description: > # this means to ignore newlines until "Language & timezone"
 ## => Language and Timezone
 ##############################
 lang: cn # the language of your site, default as "en"
-timezone: Asia/Chongqin # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
+timezone: Asia/Chongqing # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
 
 
 ## => Author and Social
 ##############################
 author: 穆宇涵
-  type      : # "person" (default), "organization"
+  type      : person # "person" (default), "organization"
   name      : 穆宇涵
   url       :
   avatar    : # path or url of avatar image (square)
-  bio       : I am an good person.(被shcool标记的student and 爽文爱好者)
+  bio       : I am an good person.
   email     : 3292114671@qq.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
@@ -84,14 +84,14 @@ toc:
 ## => Markdown Enhancements
 ##############################
 ## Mathjax
-mathjax: ture # false (default), true
-mathjax_autoNumber: ture # false (default), true
+mathjax: true # false (default), true
+mathjax_autoNumber: true # false (default), true
 
 ## Mermaid
-mermaid: ture # false (default), true
+mermaid: true # false (default), true
 
 ## Chart
-chart: ture # false (default), true
+chart: true # false (default), true
 
 
 ## => Paginate
